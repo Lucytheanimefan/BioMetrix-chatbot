@@ -1,15 +1,18 @@
 {% extends "layout.html" %} {% block body %}
 <div class="row">
-    <div class="col s12" id="chathistory">
-        <p class="z-depth-5">Chat history</p>
-    </div>
-    <form class="col s12">
-        <div class="row">
-            <div class="input-field col s12">
-                <textarea id="textarea1" class="materialize-textarea"></textarea>
-                <label for="textarea1">Chat</label>
-            </div>
+    <div class="row">
+        <div class="input-field col s12">
+            <textarea id="chat_text" class="materialize-textarea"></textarea>
+            <label for="chat_text">Chat</label>
         </div>
-    </form>
+    </div>
+    <div class="row">
+        <button class="btn" id="sendMessage" onclick="sendMessage();">Send Message</button>
+    </div>
+    <div class="row">
+        <div class="col s12 z-depth-5" id="chathistory">
+            <h1>Chat History</h1>
+        </div>
+    </div>
 </div>
 {% endblock %}

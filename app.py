@@ -9,6 +9,8 @@ from parser import *
 import sys
 import json
 from JSONEncoder import JSONEncoder
+import witCommands.witCommands
+from witCommands.witCommands import get_response
 
 app = Flask(__name__)
 
@@ -25,6 +27,14 @@ def home():
 	return render_template('chat.html')
 
 
+@app.route("/sendMessage", methods = ["POST", "GET"])
+def send():
+	print "in send message in py"
+	print("In send message")
+	message = request.json['message']
+	print("Message: "+message)
+	resp = get_response(message)
+	return jsonify(result=resp)
 
 
 if __name__ == "__main__":
