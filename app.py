@@ -34,6 +34,8 @@ def send():
 	message = request.json['message']
 	print("Message: "+message)
 	resp = get_response(message)
+	print("Resp: ")
+	print(resp)
 	return jsonify(result=resp)
 
 

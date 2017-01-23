@@ -1,6 +1,6 @@
 from wit import Wit
 
-access_token = "PNUPYT4U3IP2VCZRMQN3L443Q2QO375F"
+access_token = "BQHY6RUVWMZ7W74INLCAXJFSSZ5Z7OY5"#"PNUPYT4U3IP2VCZRMQN3L443Q2QO375F"
 
 def send(request, response):
     print('Sending to user...', response['text'])
@@ -16,6 +16,11 @@ def first_entity_value(entities, entity):
     return val['value'] if isinstance(val, dict) else val
 
 def get_forecast(request): ### the error I get for this line: TypeError: get_forecast() takes 1 positional argument but 2 were given
+    print("THIS IS THE REQUEST: ")
+    '''
+    {'text': u'what is the weather in rome', 'context': {}, 'session_id': 'my-user-session-42', 'entities': {u'intent': [{u'confidence': 0.9949754848030923, u'value': u'weather'}], u'location': [{u'suggested': True, u'confidence': 0.9963185770228331, u'type': u'value', u'value': u'rome'}]}}
+    '''
+    print request
     context = request['context']
     entities = request['entities']
  
@@ -29,24 +34,40 @@ def get_forecast(request): ### the error I get for this line: TypeError: get_for
  
     return context
 
+def get_score(request):
+    print("GET SCORE")
+    print(request)
+    context = request['context']
+    entities = request['entities']
+    scoreType = first_entity_value(entities, 'bio_stat')
+    print("SCORE TYPE: "+scoreType)
+    context['stats_score'] = 'This is a test score'
+    print(context)
+    return context
+
 actions = {
     'send': send,
-    'getForecast': get_forecast,
+    'getScore': get_score,
 }
 
 client = Wit(access_token=access_token, actions=actions)
 
 def create_client(actions):
-	client = Wit(access_token=access_token, actions=actions)
-	return client
+    print("In create client")
+    print(actions)
+    client = Wit(access_token=access_token, actions=actions)
+    print(client)
+    return client
 
 def get_response(message, vactions=actions):
-	session_id = 'my-user-session-42'
-	context0 = {}
-	wit_client = create_client(actions)
-	resp = wit_client.message(message)
-	context1 = wit_client.run_actions(session_id, message, context0)
-	return context1
+    print("GE RESPONSE")
+    session_id = 'my-user-session-50'
+    context0 = {}
+    wit_client = create_client(actions)
+    resp = wit_client.message(message)
+    print("wit client messaged: "+message)
+    context1 = wit_client.run_actions(session_id, message, context0)
+    return context1
 
 
 #client.interactive()
