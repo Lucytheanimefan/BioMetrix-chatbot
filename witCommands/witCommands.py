@@ -1,6 +1,23 @@
 from wit import Wit
+import urllib
+import requests
 
 access_token = "BQHY6RUVWMZ7W74INLCAXJFSSZ5Z7OY5"#"PNUPYT4U3IP2VCZRMQN3L443Q2QO375F"
+
+
+biometrix_id = '812f8b53-a7b7-4167-ba44-312daad33ee2' #dipesh's 
+
+#https://stats-api.biometrixtech.com/stats/aggScores/athMechStress?userId=812f8b53-a7b7-4167-ba44-312daad33ee2&startDate=2016-12-23&endDate=2017-01-22&resolution=1
+test_json = {"userId": biometrix_id, "startDate":'2016-12-23','endDate':'2017-01-22','resolution':'1'}
+main_url = 'https://stats-api.biometrixtech.com/stats'
+
+def get_athlete_mech_stress(json):
+    url = main_url + '/aggScores/athMechStress?'
+    params = urllib.urlencode(json)
+    data = requests.get(url+params)
+    print("DATA FROM API")
+    print data.content
+    return data.content
 
 def send(request, response):
     print('Sending to user...', response['text'])
@@ -41,7 +58,7 @@ def get_score(request):
     entities = request['entities']
     scoreType = first_entity_value(entities, 'bio_stat')
     print("SCORE TYPE: "+scoreType)
-    context['bioscore'] = 'This is a test score'
+    context['bioscore'] = get_athlete_mech_stress(test_json)
     print(context)
     return context
 
@@ -61,7 +78,7 @@ def create_client(actions):
 
 def get_response(message, vactions=actions):
     print("GE RESPONSE")
-    session_id = 'my-user-session-52'
+    session_id = 'my-user-session-54'
     context0 = {}
     wit_client = create_client(actions)
     resp = wit_client.message(message)
