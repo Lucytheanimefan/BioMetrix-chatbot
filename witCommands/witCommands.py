@@ -61,7 +61,7 @@ def create_client(actions):
 
 def get_response(message, vactions=actions):
     print("GE RESPONSE")
-    session_id = 'my-user-session-50'
+    session_id = 'my-user-session-51'
     context0 = {}
     wit_client = create_client(actions)
     resp = wit_client.message(message)
