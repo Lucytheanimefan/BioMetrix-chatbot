@@ -1,16 +1,13 @@
 from wit import Wit
 import urllib
 import requests
+import BioMetrixAPI.wrapper
+from BioMetrixAPI.wrapper import *
 
 access_token = "BQHY6RUVWMZ7W74INLCAXJFSSZ5Z7OY5"#"PNUPYT4U3IP2VCZRMQN3L443Q2QO375F"
 
 
-biometrix_id = '812f8b53-a7b7-4167-ba44-312daad33ee2' #dipesh's 
-
-#https://stats-api.biometrixtech.com/stats/aggScores/athMechStress?userId=812f8b53-a7b7-4167-ba44-312daad33ee2&startDate=2016-12-23&endDate=2017-01-22&resolution=1
-test_json = {"userId": biometrix_id, "startDate":'2016-12-23','endDate':'2017-01-22','resolution':'1'}
-main_url = 'https://stats-api.biometrixtech.com/stats'
-
+'''
 def get_athlete_mech_stress(json):
     url = main_url + '/aggScores/athMechStress?'
     params = urllib.urlencode(json)
@@ -18,6 +15,7 @@ def get_athlete_mech_stress(json):
     print("DATA FROM API")
     print data.content
     return data.content
+'''
 
 def send(request, response):
     print('Sending to user...', response['text'])
@@ -62,9 +60,19 @@ def get_score(request):
     print(context)
     return context
 
+def get_definition(request):
+    print("GET DEFINITION")
+    print(request)
+    context = request['context']
+    entities = request['entities']
+    scoreType = first_entity_value(entities, 'wikipedia_search_query')
+    context["definition"] = get_wiki_def(scoreType)
+    return context
+
 actions = {
     'send': send,
     'getScore': get_score,
+    'getDefinition':get_definition
 }
 
 client = Wit(access_token=access_token, actions=actions)
@@ -78,7 +86,7 @@ def create_client(actions):
 
 def get_response(message, vactions=actions):
     print("GE RESPONSE")
-    session_id = 'my-user-session-54'
+    session_id = 'my-user-session-57'
     context0 = {}
     wit_client = create_client(actions)
     resp = wit_client.message(message)
